@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_mandiri/splashscreen.dart';
+import 'package:projek_novel/splashscreen.dart';
 
 void main() {
   runApp(const MyApp());

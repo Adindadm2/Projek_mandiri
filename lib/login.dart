@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -54,14 +56,6 @@ class _LoginPageState extends State<LoginPage> {
           child: Text('Log In', style: TextStyle(color: Colors.white)),
         ),
       ),
-    );
-
-    final forgotLabel = (
-      child: Text(
-        'Forgot password?',
-        style: TextStyle(color: Colors.black54),
-      ),
-      onPressed: () {},
     );
 
     return Scaffold(
