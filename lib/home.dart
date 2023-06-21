@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:splashscreen/header_drawer.dart';
-import 'package:splashscreen/cerita1.dart';
-import 'package:splashscreen/cerita2.dart';
-import 'package:splashscreen/profil.dart';
+import 'package:projek_novel/header_drawer.dart';
+import 'package:projek_novel/cerita1.dart';
+import 'package:projek_novel/cerita2.dart';
+import 'package:projek_novel/cerita3.dart';
+import 'package:projek_novel/cerita4.dart';
+import 'package:projek_novel/profil.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -49,10 +51,8 @@ class _HomePageState extends State<HomePage> {
                   leading: const Icon(Icons.people),
                   title: const Text("Profil"),
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>  Profil()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Profil()));
                   },
                 ),
                 ListTile(
@@ -121,14 +121,23 @@ class _HomePageState extends State<HomePage> {
               Card(
                 margin: const EdgeInsets.all(8),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Cerita3()));
+                  },
                   splashColor: Colors.blue,
                   child: Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Image.asset("assets/img/malam.jpg"),
-                        Text("Pengecat Langit Malam", style: TextStyle(fontSize: 17.0)),
+                        Image.asset(
+                          "assets/img/malam.jpg",
+                          height: 280,
+                        ),
+                        Text("Pengecat Langit Malam",
+                            style: TextStyle(fontSize: 17.0)),
                       ],
                     ),
                   ),
@@ -137,13 +146,22 @@ class _HomePageState extends State<HomePage> {
               Card(
                   margin: const EdgeInsets.all(8),
                   child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Cerita4()));
+                      },
                       splashColor: Colors.blue,
                       child: Center(
                           child:
                               Column(mainAxisSize: MainAxisSize.min, children: [
-                        Image.asset("assets/img/mawar.jpg"),
-                        Text("Mawar", style: TextStyle(fontSize: 17.0)),
+                        Image.asset(
+                          "assets/img/mawar.jpg",
+                          height: 280,
+                        ),
+                        Text("mawar merah darah",
+                            style: TextStyle(fontSize: 17.0)),
                       ]))))
             ]));
   }

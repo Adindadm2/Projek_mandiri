@@ -15,7 +15,8 @@ class Profil extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 64,
-              backgroundImage: NetworkImage('https://images.tokopedia.net/img/cache/500-square/VqbcmM/2022/7/16/cd27b606-0648-4e64-88fe-d7395f24557f.jpg'),
+              backgroundImage: NetworkImage(
+                  'https://images.tokopedia.net/img/cache/500-square/VqbcmM/2022/7/16/cd27b606-0648-4e64-88fe-d7395f24557f.jpg'),
             ),
             SizedBox(height: 16.0),
             Text(
