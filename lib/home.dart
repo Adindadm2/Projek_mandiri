@@ -4,6 +4,7 @@ import 'package:projek_novel/cerita1.dart';
 import 'package:projek_novel/cerita2.dart';
 import 'package:projek_novel/cerita3.dart';
 import 'package:projek_novel/cerita4.dart';
+import 'package:projek_novel/login.dart';
 import 'package:projek_novel/profil.dart';
 
 class HomePage extends StatefulWidget {
@@ -59,7 +60,8 @@ class _HomePageState extends State<HomePage> {
                   leading: const Icon(Icons.logout),
                   title: const Text("Log Out"),
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                 ),
               ],

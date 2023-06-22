@@ -1,6 +1,5 @@
-// ignore_for_file: unused_local_variable
-
 import 'package:flutter/material.dart';
+import 'package:projek_novel/landingpage.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -16,7 +15,10 @@ class _LoginPageState extends State<LoginPage> {
       child: CircleAvatar(
         backgroundColor: Colors.cyanAccent[50],
         radius: 48.0,
-        child: Image.asset('assets/img/wp.jpg'),
+        child: Image.asset(
+          'assets/img/logo.png',
+          height: 60,
+        ),
       ),
     );
 
@@ -51,9 +53,15 @@ class _LoginPageState extends State<LoginPage> {
         child: MaterialButton(
           minWidth: 200.0,
           height: 42.0,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const LandingPage()));
+          },
           color: Colors.lightBlueAccent,
-          child: Text('Log In', style: TextStyle(color: Colors.white)),
+          child: Text(
+            'Log In',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
     );

@@ -4,7 +4,7 @@ class Profil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.yellowAccent,
+      backgroundColor: Colors.black54,
       appBar: AppBar(
         title: Text('Profile Kelompok 3'),
       ),
