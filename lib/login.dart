@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:projek_novel/database/dbHelper.dart';
-import 'package:projek_novel/landingpage.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';

@@ -2,7 +2,6 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:projek_novel/Favorite.dart';
-import 'package:projek_novel/History.dart';
 import 'package:projek_novel/Penulis.dart';
 import 'package:projek_novel/home.dart';
 
@@ -16,10 +15,9 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   int _bottomNavCurrentIndex = 0;
   List<Widget> _container = [
-    HistoryPage(),
     HomePage(),
     FavoritePage(),
-    PenulisPage(),
+    PenulisCard(),
   ];
 
   @override
@@ -41,16 +39,6 @@ class _LandingPageState extends State<LandingPage> {
       },
       backgroundColor: Colors.blue,
       items: [
-        BottomNavigationBarItem(
-            activeIcon: Icon(
-              Icons.history,
-              color: Colors.black54,
-            ),
-            icon: Icon(
-              Icons.history,
-              color: Colors.white,
-            ),
-            label: "Riwayat"),
         BottomNavigationBarItem(
             activeIcon: Icon(
               Icons.home,
