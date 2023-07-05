@@ -4,7 +4,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:projek_novel/database/dbpenulis.dart';
 import 'package:projek_novel/models/penulis.dart';
 import 'package:projek_novel/add_screen.dart';
-import 'package:projek_novel/penulis.dart';
 
 class PenulisScreen extends StatefulWidget {
   const PenulisScreen({super.key});

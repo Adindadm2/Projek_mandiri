@@ -16,7 +16,7 @@ class _LandingPageState extends State<LandingPage> {
   int _bottomNavCurrentIndex = 0;
   List<Widget> _container = [
     HomePage(),
-    FavoritePage(),
+    BerlanggananPage(),
     PenulisCard(),
   ];
 
@@ -51,14 +51,14 @@ class _LandingPageState extends State<LandingPage> {
             label: "Home"),
         BottomNavigationBarItem(
             activeIcon: Icon(
-              Icons.favorite,
+              Icons.wallet_outlined,
               color: Colors.black54,
             ),
             icon: Icon(
-              Icons.favorite,
+              Icons.wallet_outlined,
               color: Colors.white,
             ),
-            label: "Favorite"),
+            label: "Berlangganan"),
         BottomNavigationBarItem(
             activeIcon: Icon(
               Icons.bookmark_add_rounded,
