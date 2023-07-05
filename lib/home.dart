@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                   leading: const Icon(Icons.logout),
                   title: const Text("Log Out"),
                   onTap: () {
-                    Navigator.pop(context,
+                    Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                 ),

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class User {
@@ -20,7 +23,8 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'login.db');
+    Directory directory = await getApplicationDocumentsDirectory();
+    String path = directory.path + 'login.db';
     return await openDatabase(
       path,
       version: 1,
