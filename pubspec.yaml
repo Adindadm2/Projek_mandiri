@@ -33,7 +33,7 @@ dependencies:
     url_launcher: ^6.0.0
     FlatButton(
   onPressed: () 
-    openWhatsApp('082374072135'); // Ganti dengan nomor WhatsApp yang ingin Anda hubungi
+    openWhatsApp('082374072135');
   
   child: Text('Berlangganan'),
 ),
