@@ -20,7 +20,7 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'login.db');
+    String path = await getDatabasesPath() + 'login.db';
     return await openDatabase(
       path,
       version: 1,
@@ -32,8 +32,8 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE users (
         id INTEGER PRIMARY KEY,
-        username TEXT,
-        password TEXT
+        username admin,
+        password 12345
       )
     ''');
   }
