@@ -108,7 +108,7 @@ class register extends StatelessWidget {
                                 builder: (context) => LoginPage()),
                           );
                           String user = 'admin';
-                          String pass = '12345';
+                          String pass = '123456';
 
                           if (getUser.text.length == 0 &&
                               getPass.text.length == 0) {

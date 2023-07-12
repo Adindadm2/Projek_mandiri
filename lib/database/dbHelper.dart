@@ -20,7 +20,7 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    String path = await getDatabasesPath() + 'login.db';
+    String path = await getDatabasesPath() + 'login';
     return await openDatabase(
       path,
       version: 1,
