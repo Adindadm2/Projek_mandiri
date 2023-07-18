@@ -1,9 +1,9 @@
-import 'dart:html';
+// import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:projek_novel/Favorite.dart';
-import 'package:projek_novel/Penulis.dart';
 import 'package:projek_novel/home.dart';
+import 'package:projek_novel/screen_penulis.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -14,11 +14,7 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   int _bottomNavCurrentIndex = 0;
-  List<Widget> _container = [
-    HomePage(),
-    BerlanggananPage(),
-    PenulisCard(),
-  ];
+  List<Widget> _container = [HomePage(), BerlanggananPage(), ListPenulisPage()];
 
   @override
   Widget build(BuildContext context) {

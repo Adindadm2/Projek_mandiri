@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:projek_novel/database/dbHelper.dart';
-import 'package:projek_novel/landingpage.dart';
-import 'package:projek_novel/register.dart';
 
-class Login extends StatelessWidget {
+class register extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
-  Future<void> _login(BuildContext context) async {
+  Future<void> _register(BuildContext context) async {
     final String username = _usernameController.text.trim();
     final String password = _passwordController.text.trim();
+    final String confirmPassword = _confirmPasswordController.text.trim();
 
-    if (username.isNotEmpty && password.isNotEmpty) {
-      final user = await dbhelper.instance.getUser(username);
-
-      if (user.isNotEmpty && user['password'] == password) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LandingPage()),
-        );
+    if (username.isNotEmpty &&
+        password.isNotEmpty &&
+        confirmPassword.isNotEmpty) {
+      if (password == confirmPassword) {
+        final user = await dbhelper.instance.getUser(username);
+        if (user.isEmpty) {
+          await dbhelper.instance.insertUser({
+            'username': username,
+            'password': password,
+          });
+          _showDialog(context, 'Registered successfully!');
+        } else {
+          _showDialog(context, 'Username already exists!');
+        }
       } else {
-        _showDialog(context, 'USERNAME DAN PASSWORD SALAH !');
+        _showDialog(context, 'Passwords do not match!');
       }
     } else {
-      _showDialog(context, 'SILAKAN ISI SEMUA KOLOM YANG ADA !');
+      _showDialog(context, 'Please fill in all fields!');
     }
   }
 
@@ -39,6 +46,9 @@ class Login extends StatelessWidget {
               child: Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
+                if (message == 'Registered successfully!') {
+                  Navigator.of(context).pop(); // Kembali ke halaman login
+                }
               },
             ),
           ],
@@ -51,7 +61,7 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('WELCOME'),
+        title: Text('Daftar'),
         backgroundColor: Colors.blue,
         centerTitle: true,
         shape: Border.all(
@@ -60,17 +70,11 @@ class Login extends StatelessWidget {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(color: Colors.white),
+        decoration: BoxDecoration(),
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "WATTPAD",
-                style: TextStyle(color: Colors.blue, fontSize: 30.0),
-              ),
-              SizedBox(height: 20.0),
               TextField(
                 controller: _usernameController,
                 decoration: InputDecoration(
@@ -81,7 +85,7 @@ class Login extends StatelessWidget {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(
-                      color: Colors.blue,
+                      color: Colors.black,
                       width: 1.0,
                     ),
                   ),
@@ -114,26 +118,40 @@ class Login extends StatelessWidget {
                     )),
                 obscureText: true,
               ),
+              SizedBox(height: 10.0),
+              TextField(
+                controller: _confirmPasswordController,
+                decoration: InputDecoration(
+                    labelText: 'Masukan Ulang Password',
+                    prefixIcon: Icon(Icons.lock),
+                    filled: true,
+                    fillColor: Colors.white,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        color: Colors.black,
+                        width: 1.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide:
+                          BorderSide(color: Colors.blueGrey, width: 2.2),
+                    )),
+                obscureText: true,
+              ),
               SizedBox(height: 20.0),
               ElevatedButton(
-                child: Text('Masuk'),
-                onPressed: () => _login(context),
+                child: Text('Register'),
+                onPressed: () => _register(context),
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
-                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                    textStyle:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-              ),
-              SizedBox(height: 10.0),
-              Text('Belum punya akun'),
-              TextButton(
-                child: Text('daftar sekarang'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => register()),
-                  );
-                },
+                  // ignore: deprecated_member_use
+                  primary: Colors.blue,
+                  // ignore: deprecated_member_use
+                  onPrimary: Colors.black,
+                  textStyle: TextStyle(fontSize: 16),
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                ),
               ),
             ],
           ),

@@ -1,33 +1,29 @@
 class Penulis {
-  int _id = 0;
-  String _title = '';
-  String _description = '';
+  int? id;
+  String? name;
+  String? judul;
 
-  Penulis(this._title, this._description);
-
-  Penulis.fromMap(Map<String, dynamic> map) {
-    this._id = map["id"];
-    this._title = map["title"];
-    this._description = map["description"];
-  }
-
-  int get id => _id;
-  String get title => _title;
-  String get description => _description;
-
-  set title(String value) {
-    _title = value;
-  }
-
-  set description(String value) {
-    _description = value;
-  }
+  Penulis({
+    this.id,
+    this.name,
+    this.judul,
+  });
 
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> map = Map<String, dynamic>();
-    //map["id"] = id;
-    map["title"] = title;
-    map["description"] = description;
+    var map = Map<String, dynamic>();
+
+    if (id != null) {
+      map['id'] = id;
+    }
+    map['name'] = name;
+    map['mobileNo'] = judul;
+
     return map;
+  }
+
+  Penulis.fromMap(Map<String, dynamic> map) {
+    this.id = map['id'];
+    this.name = map['name'];
+    this.judul = map['mobileNo'];
   }
 }
