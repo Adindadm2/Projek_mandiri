@@ -1,75 +1,75 @@
-import 'dart:io';
-
-import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:projek_novel/models/penulis.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class DbHelper {
-  static late DbHelper _dbHelper;
-  static late Database _database;
+  static final DbHelper _instance = DbHelper._internal();
+  static Database? _database;
 
-  DbHelper._createObject();
+  //inisialisasi beberapa variabel yang dibutuhkan
+  final String tableName = 'tablePenulis';
+  final String columnId = 'id';
+  final String columnName = 'name';
+  final String columnMobileNo = 'mobileNo';
 
-  factory DbHelper() {
-    _dbHelper = DbHelper._createObject();
-    return _dbHelper;
-  }
+  DbHelper._internal();
+  factory DbHelper() => _instance;
 
-  Future<Database> initDb() async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'penulis.db';
-    var contactDatabase = openDatabase(path, version: 1, onCreate: _createDb);
-    return contactDatabase;
-  }
-
-  void _createDb(Database db, int version) async {
-    await db.execute("""
-      CREATE TABLE penulis (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        title TEXT, 
-        description TEXT
-      )
-    """);
-  }
-
-  Future<Database> get database async {
-    _database = await initDb();
+  //cek apakah database ada
+  Future<Database?> get _db async {
+    if (_database != null) {
+      return _database;
+    }
+    _database = await _initDb();
     return _database;
   }
 
-  Future<int> insert(Penulis object) async {
-    Database db = await this.database;
-    int count = await db.insert('note', object.toMap());
-    return count;
+  Future<Database?> _initDb() async {
+    String databasePath = await getDatabasesPath();
+    String path = join(databasePath, 'penulis.db');
+
+    return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
-  Future<List<Map<String, dynamic>>> select() async {
-    Database db = await this.database;
-    var mapList = await db.query('penulis', orderBy: 'name');
-    return mapList;
+  //membuat tabel dan field-fieldnya
+  Future<void> _onCreate(Database db, int version) async {
+    var sql = "CREATE TABLE $tableName($columnId INTEGER PRIMARY KEY, "
+        "$columnName TEXT,"
+        "$columnMobileNo TEXT,)";
+    await db.execute(sql);
   }
 
-  Future<int> update(Penulis object) async {
-    Database db = await this.database;
-    int count = await db.update('penulis', object.toMap(),
-        where: 'id=?', whereArgs: [object.title]);
-    return count;
+  //insert ke database
+  Future<int?> savePenulis(Penulis penulis) async {
+    var dbClient = await _db;
+    return await dbClient!.insert(tableName, penulis.toMap());
   }
 
-  Future<int> delete(int id) async {
-    Database db = await this.database;
-    int count = await db.delete('penulis', where: 'id=?', whereArgs: [id]);
-    return count;
+  //read database
+  Future<List?> getAllPenulis() async {
+    var dbClient = await _db;
+    var result = await dbClient!.query(tableName, columns: [
+      columnId,
+      columnName,
+      columnMobileNo,
+    ]);
+
+    return result.toList();
   }
 
-  Future<List<Penulis>> getPenulisList() async {
-    var penulisMapList = await select();
-    int count = penulisMapList.length;
-
-    List<Penulis> penulisList = [];
-    for (int i = 0; i < count; i++) {
-      penulisList.add(Penulis.fromMap(penulisMapList[i]));
-    }
-    return penulisList;
+  //update database
+  Future<int?> updatePenulis(Penulis penulis) async {
+    var dbClient = await _db;
+    return await dbClient!.update(tableName, penulis.toMap(),
+        where: '$columnId = ?', whereArgs: [penulis.id]);
   }
+
+  //hapus database
+  Future<int?> deletePenulis(int id) async {
+    var dbClient = await _db;
+    return await dbClient!
+        .delete(tableName, where: '$columnId = ?', whereArgs: [id]);
+  }
+
+  deletepenulis(int i) {}
 }

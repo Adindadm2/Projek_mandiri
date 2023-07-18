@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                   title: const Text("Log Out"),
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
+                        MaterialPageRoute(builder: (context) => Login()));
                   },
                 ),
               ],
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Image.asset(
                           "assets/img/waktu.jpg",
-                          height: 280.0,
+                          height: 100.0,
                         ),
                         Text("Demi Waktu", style: TextStyle(fontSize: 17.0)),
                       ],
@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Image.asset(
                           "assets/img/Bus.jpg",
-                          height: 280,
+                          height: 100,
                         ),
                         Text("Bus Kuning", style: TextStyle(fontSize: 17.0)),
                       ],
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Image.asset(
                           "assets/img/malam.jpg",
-                          height: 280,
+                          height: 100,
                         ),
                         Text("Pengecat Langit Malam",
                             style: TextStyle(fontSize: 17.0)),
@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                               Column(mainAxisSize: MainAxisSize.min, children: [
                         Image.asset(
                           "assets/img/mawar.jpg",
-                          height: 280,
+                          height: 100,
                         ),
                         Text("mawar merah darah",
                             style: TextStyle(fontSize: 17.0)),

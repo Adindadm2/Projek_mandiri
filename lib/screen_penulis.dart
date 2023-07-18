@@ -1,129 +1,129 @@
 import 'package:flutter/material.dart';
 import 'package:projek_novel/Penulis.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:projek_novel/database/dbpenulis.dart';
 import 'package:projek_novel/models/penulis.dart';
-import 'package:projek_novel/add_screen.dart';
 
-class PenulisScreen extends StatefulWidget {
-  const PenulisScreen({super.key});
+class ListPenulisPage extends StatefulWidget {
+  const ListPenulisPage({Key? key}) : super(key: key);
 
   @override
-  State<PenulisScreen> createState() => _PenulisState();
+  _ListPenulisPageState createState() => _ListPenulisPageState();
 }
 
-class _PenulisState extends State<PenulisScreen> {
-  DbHelper dbHelper = DbHelper();
-  int count = 0;
-  List<Penulis> penulisList = [];
+class _ListPenulisPageState extends State<ListPenulisPage> {
+  List<Penulis> listPenulis = [];
+  DbHelper db = DbHelper();
 
   @override
   void initState() {
+    //menjalankan fungsi getallkontak saat pertama kali dimuat
+    _getAllPenulis();
     super.initState();
-    updateListView(); // Loading the diary when the app starts
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blueGrey,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: Colors.white,
-          child: const Icon(Icons.add, size: 30, color: Colors.blueGrey),
-        ),
+        drawer: Drawer(),
         appBar: AppBar(
-          title: const Text(
-            'Penulis',
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: Colors.transparent,
+          title: const Text("PENULIS"),
         ),
         body: ListView.builder(
-            itemCount: 3,
+            itemCount: listPenulis.length,
             itemBuilder: (context, index) {
-              return PenulisCard();
-            }));
+              Penulis penulis = listPenulis[index];
+              return Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.person,
+                    size: 50,
+                  ),
+                  title: Text('${penulis.name}'),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8,
+                        ),
+                        child: Text("Judul: ${penulis.judul}"),
+                      ),
+                    ],
+                  ),
+                  trailing: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Row(
+                      children: [
+                        // button edit
+                        IconButton(
+                            onPressed: () {
+                              _openFormEdit(penulis);
+                            },
+                            icon: Icon(Icons.edit)),
+                        // button hapus
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            _deletePenulis(penulis, index);
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            _openFormCreate();
+          }, //membuat button mengapung di bagian bawah kanan layar
+        ));
   }
 
-  Future<Penulis> navigateToAddScreen(
-      BuildContext context, Penulis penulis) async {
-    var result = await Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) {
-      return TambahScreen(penulis: penulis);
-    }));
-    return result;
-  }
+  //mengambil semua data Kontak
+  Future<void> _getAllPenulis() async {
+    //list menampung data dari database
+    var list = await db.getAllPenulis();
 
-  ListView createListView() {
-    return ListView.builder(
-      itemCount: count,
-      itemBuilder: (BuildContext context, int index) {
-        return Card(
-          color: Colors.white,
-          elevation: 2.0,
-          child: ListTile(
-            leading: const CircleAvatar(
-              backgroundColor: Colors.red,
-              child: Icon(Icons.people),
-            ),
-            title: Text(this.penulisList[index].title),
-            subtitle: Text(this.penulisList[index].description),
-            trailing: GestureDetector(
-              child: const Icon(Icons.delete),
-              onTap: () {
-                deleteNote(penulisList[index]);
-              },
-            ),
-            onTap: () async {
-              var note =
-                  await navigateToAddScreen(context, this.penulisList[index]);
-              if (note.title != '' && note.description != '') {
-                editNote(note);
-              }
-            },
-          ),
-        );
-      },
-    );
-  }
+    //ada perubahanan state
+    setState(() {
+      //hapus data pada listKontak
+      listPenulis.clear();
 
-  void addNote(Penulis object) async {
-    int result = await dbHelper.insert(object);
-    if (result > 0) {
-      updateListView();
-    }
-  }
-
-  void editNote(Penulis object) async {
-    int result = await dbHelper.update(object);
-    if (result > 0) {
-      updateListView();
-    }
-  }
-
-  void deleteNote(Penulis object) async {
-    int result = await dbHelper.delete(object.id);
-    if (result > 0) {
-      updateListView();
-    }
-  }
-
-  void updateListView() {
-    final Future<Database> dbFuture = dbHelper.initDb();
-    dbFuture.then((database) {
-      Future<List<Penulis>> penulisListFuture = dbHelper.getPenulisList();
-      penulisListFuture.then((penulisList) {
-        setState(() {
-          this.penulisList = penulisList;
-          this.count = penulisList.length;
-        });
+      //lakukan perulangan pada variabel list
+      list!.forEach((penulis) {
+        //masukan data ke listKontak
+        listPenulis.add(Penulis.fromMap(penulis));
       });
     });
+  }
+
+  //menghapus data Kontak
+  Future<void> _deletePenulis(Penulis penulis, int position) async {
+    await db.deletePenulis(penulis.id!);
+    setState(() {
+      listPenulis.removeAt(position);
+    });
+  }
+
+  // membuka halaman tambah Kontak
+  Future<void> _openFormCreate() async {
+    var result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => FormPenulis()));
+    if (result == 'save') {
+      await _getAllPenulis();
+    }
+  }
+
+  //membuka halaman edit Kontak
+  Future<void> _openFormEdit(Penulis penulis) async {
+    var result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => FormPenulis(penulis: penulis)));
+    if (result == 'update') {
+      await _getAllPenulis();
+    }
   }
 }

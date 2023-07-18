@@ -1,69 +1,51 @@
-import 'dart:io';
-
-import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
 
-class User {
-  final String username;
-  final String password;
-
-  User({required this.username, required this.password});
-}
-
-class DatabaseHelper {
-  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
+class dbhelper {
+  static final dbhelper instance = dbhelper._getInstance();
   static Database? _database;
 
-  DatabaseHelper._privateConstructor();
+  dbhelper._getInstance();
 
-  Future<Database> get database async {
-    if (_database != null) return _database!;
+  Future<Database?> get database async {
+    if (_database != null) return _database;
+
     _database = await _initDatabase();
-    return _database!;
+    return _database;
   }
 
   Future<Database> _initDatabase() async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'login.db';
+    final documentsDirectory = await getApplicationDocumentsDirectory();
+    final path = join(documentsDirectory.path, 'my_app.db');
+
     return await openDatabase(
       path,
       version: 1,
-      onCreate: _onCreate,
+      onCreate: _createDB,
     );
   }
 
-  Future<void> _onCreate(Database db, int version) async {
+  Future<void> _createDB(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE users (
-        id INTEGER PRIMARY KEY,
+      CREATE TABLE users(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
         password TEXT
       )
     ''');
   }
 
-  Future<int> insertUser(User user) async {
-    Database db = await instance.database;
-    return await db.insert('users', {
-      'username': user.username,
-      'password': user.password,
-    });
+  Future<int> insertUser(Map<String, dynamic> row) async {
+    final db = await instance.database;
+    return await db!.insert('users', row);
   }
 
-  Future<User?> getUser(String username, String password) async {
-    Database db = await instance.database;
-    List<Map<String, dynamic>> result = await db.query(
-      'users',
-      where: 'username = ? AND password = ?',
-      whereArgs: [username, password],
-      limit: 1,
-    );
-    if (result.isNotEmpty) {
-      return User(
-        username: result.first['username'],
-        password: result.first['password'],
-      );
-    }
-    return null;
+  Future<Map<String, dynamic>> getUser(String username) async {
+    final db = await instance.database;
+    final result = await db!
+        .query('users', where: 'username = ?', whereArgs: [username], limit: 1);
+
+    return result.isNotEmpty ? result.first : {};
   }
 }
